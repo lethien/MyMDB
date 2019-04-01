@@ -19,10 +19,22 @@ CREATE TABLE User
 );
 
 -- Create Movie table
--- CREATE TABLE Movie
--- (
-
--- );
+CREATE TABLE Movie
+(
+	MovieID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	Title CHAR(50) NOT NULL,
+	Poster CHAR(255) NOT NULL,  
+	PlotSummary TEXT NOT NULL,
+	Runtime INT NOT NULL,
+	Genres TEXT NOT NULL,
+	Crew TEXT NOT NULL, -- cast showed up as a keyword in my text editor so I changed it
+	Directors TEXT NOT NULL,
+	Awards TEXT NOT NULL,
+	CreatedBy INT NOT NULL,
+	PRIMARY KEY(MovieID),
+	UNIQUE KEY(Title),
+	FOREIGN KEY(CreatedBy)
+);
 
 -- Create Review table
 -- CREATE TABLE Review 
