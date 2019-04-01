@@ -1,7 +1,7 @@
 <?php
 
 require_once("inc/config.inc.php");
-require_once("inc/Entity/User.class.php");
+require_once("inc/Entity/Movie.class.php");
 require_once("inc/Utility/LoginManager.class.php");
 require_once("inc/Utility/Page.class.php");
 
