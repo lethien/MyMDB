@@ -14,18 +14,19 @@ Page::page_head(true);
 
 // TODO: get movies list based on search term in POST
 $moviesList = array();
+$allMovies = array();
 
 //Get every movie 
-$result = RestClient::call("GET",array());
+$result = RestClient::call(MOVIE_API,"GET",array());
 
 //De-serialize the result of the Rest call.
 $jmovies = json_decode($result);
 
-$allMovies = array();
 
 foreach ($jmovies as $m)  {
     //Assemble a new movie class
         $movie = new Movie();
+        $movie->setMovieID($m->MovieID);
         $movie->setTitle($m->Title);
 		$movie->setPosterURL($m->Poster);
 		$movie->setSummary($m->PlotSummary);
@@ -37,22 +38,10 @@ foreach ($jmovies as $m)  {
 		$movie->setCreatedBy($m->CreatedBy);
     
     $allMovies[] = $movie;
+    var_dump($allMovies);
 }
 
-if(isset($_POST['search'])){
-    $searchTerm = $_POST['search'];
-    
-
-    foreach($allMovies as $movie){
-        $movieTitle = $movie->getTitle();
-        //this should check if $_POST['search'] is contained within the title of a movie
-        if (strpos($movieTitle, $searchTerm) == true) 
-        { 
-        $moviesList[] = $movie;
-        }
-    }
-}
-Page::render_movie_list($moviesList);
+Page::render_movie_list($allMovies);
 
 // Page footer
 Page::footer();
