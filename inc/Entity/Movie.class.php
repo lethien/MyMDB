@@ -105,7 +105,7 @@ class Movie {
     function jsonSerialize() {
 		// Add selected properties to a standard class
         $obj = new StdClass;
-        $obj->MovieID = $this->getMovieI();
+        $obj->MovieID = $this->getMovieID();
         $obj->Title = $this->getTitle();
         $obj->Poster = $this->getPosterURL();
         $obj->PlotSummary = $this->getSummary();

@@ -1,2 +1,5 @@
--- Use database Lab08
+-- Create database MyMDB
+CREATE DATABASE MyMDB;
+
+-- Use database MyMDB
 USE MyMDB;
