@@ -27,7 +27,7 @@ class MovieMapper {
 	
 	static function getMovie(string $title)    {
         
-        $sqlSelect = "SELECT * FROM books WHERE Title = :Title";
+        $sqlSelect = "SELECT * FROM Movie WHERE Title = :Title";
         //Query
         self::$db->query($sqlSelect);
         //Bind
@@ -39,7 +39,7 @@ class MovieMapper {
     }
 	
 	static function deleteMovie(string $title) : bool {
-        $deleteSQLQuery = "DELETE FROM Books WHERE Title = :Title;";
+        $deleteSQLQuery = "DELETE FROM Movie WHERE Title = :Title;";
 
         try {
 
