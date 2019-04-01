@@ -15,7 +15,15 @@ class Review {
     private $UserID;
     private $MovieID;
     private $Rating;
-    private $Review;   
+    private $Review; 
+    
+    // Constructor
+    public function __construct() {
+        $this->setUserID(0);
+        $this->setMovieID(0);
+        $this->setRating(0);
+        $this->setReview("");
+    }
 
     // Getters
     public function getUserID() : int {
