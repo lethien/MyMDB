@@ -8,11 +8,9 @@ require_once("inc/Utility/Page.class.php");
 LoginManager::verifyUserLoggedin();
 
 // Page header
-Page::$title = "MyMDB - Home";
+Page::$title = "MyMDB - Movie Info";
 Page::header();
 Page::page_head(true);
-
-Page::render_homepage();
 
 // Page footer
 Page::footer();

@@ -7,7 +7,7 @@ class UserMapper {
     // Error
     public static $error;
 
-    // Initialize PDB agent with Customer Class Name
+    // Initialize PDB agent with User Class Name
     public static function initialize() {
         try {
             self::$db = new PDOAgent("User"); 

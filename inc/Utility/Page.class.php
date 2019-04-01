@@ -71,6 +71,29 @@ class Page {
                     ?>
                 </div>
             </div>
+
+            <?php
+                if($isLoggedin) {
+                    ?>
+                        <div class="row" style="padding: 1.5rem 3.5rem 0 3.5rem;background-color: #FFC342;border-radius: 50px;">
+                            <div class="three columns">
+                                <a href="MoviesList.php"><h5>View all Movies</h5></a>
+                            </div>
+                            <div class="one columns">
+                                <h5>Or</h5>
+                            </div>
+                            <div class="eight columns">
+                                <form action="MoviesList.php" method="POST">                                                
+                                    <input class="button-primary u-pull-right" type="submit" value="Search">
+                                    <input type="text" name="search" placeholder="Search Movie Title, Description, ..." 
+                                        class="u-pull-right eight columns"
+                                        value="<?php if(isset($_POST['search'])) echo $_POST['search']; ?>" />
+                                </form>
+                            </div>
+                        </div>
+                    <?php
+                }
+            ?>
         <?php
     }
 
@@ -189,6 +212,64 @@ class Page {
                             echo '</p>';
                         }
                     ?>
+                </div>
+            </div>
+        <?php
+    }
+
+    public static function render_homepage() {
+        ?>
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4>MyMDB information:</h4>
+                    <p>Number of movies: 1,558,125</p>
+                    <p>Number of users: 155,245</p>
+                    <p>Number of reviews: 548,456,253</p>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4>Highest Rating:</h4>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4>Most Reviewed:</h4>
+                </div>
+            </div>
+        <?php
+    }
+
+    public static function render_movie_list($movies) {
+        ?>
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4>Movie List - <?php echo count($movies) ?> results - <?php if(isset($_POST['search'])) echo 'Search term: '.$_POST['search']; ?></h4>
+                </div>
+            </div>
+        <?php
+    }
+
+    public static function render_user_detail() {
+        ?>
+            <div class="row" style="margin-top: 30px">
+                <div class="one-half column">
+                    <h4>User information:</h4>
+                    <p>User ID: <?php echo LoginManager::getLoggedinUser()->getUserID(); ?></p>
+                    <p>User Name: <?php echo LoginManager::getLoggedinUser()->getUserName(); ?></p>
+                    <p>Email: <?php echo LoginManager::getLoggedinUser()->getEmail(); ?></p>
+                </div>
+                <div class="one-half column">
+                    <h4>User Activity:</h4>
+                    <p>Created: 165 movies records</p>
+                    <p>Left: 2,001 reviews</p>
+                </div>
+            </div>            
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4>Favorite Movies:</h4>
                 </div>
             </div>
         <?php

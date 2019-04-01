@@ -4,6 +4,7 @@ A simple IMDB clone using WAMP
 ## Final Project of CSIS3280 Course - Douglas College
 Instructor: 
 - Rahim Virani
+
 Collaborators: 
 - tunglamk53
 - TrevorFawcett

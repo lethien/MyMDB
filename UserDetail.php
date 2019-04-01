@@ -12,7 +12,7 @@ Page::$title = "MyMDB - User Detail";
 Page::header();
 Page::page_head(true);
 
-echo "User Detail page";
+Page::render_user_detail();
 
 // Page footer
 Page::footer();
