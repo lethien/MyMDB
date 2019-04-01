@@ -2,6 +2,7 @@
 
 class RestClient {
     static function call($endpoint, $method, $callData) {
+        
         $requestHeaders = array("requesttype" => $method);
         
         $data = array_merge($requestHeaders, $callData);

@@ -249,6 +249,64 @@ class Page {
                     <h4>Movie List - <?php echo count($movies) ?> results - <?php if(isset($_POST['search'])) echo 'Search term: '.$_POST['search']; ?></h4>
                 </div>
             </div>
+
+            <?php 
+            if (count($movies) > 0)
+        {
+                echo '<table class="u-full-width">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Poster</th>
+                            <th>PlotSummary</th>
+                            <th>Runtime</th>
+                            <th>Genres</th>
+                            <th>Crew</th>
+                            <th>Directors</th>
+                            <th>Awards</th>
+                        </tr>
+                        </thead>
+                        <tbody>';
+
+        foreach ($movies as $movie)    {
+            echo '  <tr>
+            <td>'.$movie->getTitle().'</td>
+            <td>'.$movie->getPosterURL().'</td>
+            <td>'.$movie->getSummary().'</td>
+            <td>'.$movie->getRuntime().'</td>
+            <td>'.$movie->getGenres().'</td> 
+            <td>'.$movie->getCrew().'</td>
+            <td>'.$movie->getDirectors().'</td> 
+            <td>'.$movie->getAwards().'</td>       
+            </tr>';
+        }
+        
+        echo '</tbody>
+        </table>';
+    }
+            ?>
+            <form method="POST" ACTION="<?php echo $_SERVER["PHP_SELF"]; ?>">
+        <div class="row">
+
+
+            <div class="eight columns">
+            <label for="Title">Search</label>
+            <input class="u-full-width" type="text" id="search" name="search">
+            
+            
+            <input class="button-primary" type="submit" value="Submit">
+            </div>
+          
+
+        </div>
+        
+        </form>
+
+
+
+
+
+
         <?php
     }
 

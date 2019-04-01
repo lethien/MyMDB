@@ -7,13 +7,17 @@ class MovieMapper {
     public static $error;
     // Initialize PDB agent with Movie Class Name
     public static function initialize() {
+       
+        
         try {
             self::$db = new PDOAgent("Movie"); 
             return true;
         } catch(Exception $e) {
             self::$error = "System failure: Can't connect to Database!";
             return false;
-        }       
+        }    
+        
+        
     }
 	
 	static function getMovies() : Array {
@@ -75,14 +79,36 @@ class MovieMapper {
 		self::$db->bind(':Crew', $newMovie->getCrew());
 		self::$db->bind(':Directors', $newMovie->getDirectors());
 		self::$db->bind(':Awards', $newMovie->getAwards());
-		self::$db->bind(':Directors', $newMovie->getCreatedBy());
+		self::$db->bind(':CreatedBy', $newMovie->getCreatedBy());
         self::$db->execute();
 
         return self::$db->lastInsertId();
 
     }
 	
-	
+	static function seachMovie(string $search)    {
+        
+        //this should search all the fields that are not numbers
+        $sqlSelect = "SELECT * FROM movie WHERE 
+        CONVERT(`Title` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`Poster` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`PlotSummary` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`Genres` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`Crew` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`Directors` USING utf8) LIKE '%$search%' 
+        OR CONVERT(`Awards` USING utf8) LIKE '%$search%';"; 
+        //Query
+        self::$db->query($sqlSelect);
+        
+        
+        //Bind
+        self::$db->bind(':Title', $search);
+        //Execute
+        self::$db->execute();
+        //Return
+        return self::$db->resultSet();
+        
+    }
 	
 	
 }

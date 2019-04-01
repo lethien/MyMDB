@@ -7,6 +7,7 @@ require_once('../inc/EntityMapper/MovieMapper.class.php');
 
 MovieMapper::initialize();
 
+
 // Pull request data from the input stream
 parse_str(file_get_contents('php://input'), $requestData);
 
@@ -24,7 +25,22 @@ switch($_SERVER['REQUEST_METHOD']) {
         header('Content-Type: application/json');
         echo json_encode($jsonMovie);
 		}
-    else{
+    else if(isset($requestData['search'])){
+        $moviesFound = MovieMapper::SeachMovie($requestData['search']);
+        $serializedList = array();
+
+        foreach ($moviesFound as $movie)   
+        {
+            $serializedList[] = $movie->jsonSerialize();
+        }
+
+        //Set the header
+        header('Content-Type: application/json');
+        //Return all the movie!
+        echo json_encode($serializedList);
+
+    }
+    else {
         //Get all the movies
         $movies = MovieMapper::getMovies();
         //Initialize an array to hold the serialized movies

@@ -31,6 +31,7 @@ class Movie {
     private $CreatedBy;
     
     // Constructor
+   /*
     public function __construct() {
         $this->setMovieID(0);
         $this->setTitle("");
@@ -43,6 +44,8 @@ class Movie {
         $this->setAwards("");
         $this->setCreatedBy(0);
     }
+    */
+    
     
 	// Getters
 	public function getMovieID() : int {
