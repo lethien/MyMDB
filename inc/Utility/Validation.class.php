@@ -43,4 +43,37 @@ class Validation {
 
         return $messages;
     }
+
+    public static function validateMovieForm($data): Array   {
+
+        //Initialize and empty array
+        $messages = array();
+
+        //Validate all the things
+        if(!isset($data["title"]) || $data["title"] == "") {
+            $messages["title"] = "Title is required";
+        }
+        if(!isset($data["poster"]) || $data["poster"] == "") {
+            $messages["poster"] = "Poster URL is required";
+        }
+        if(!isset($data["summary"]) || $data["summary"] == "") {
+            $messages["summary"] = "Plot Summary is required";
+        }
+        if(!isset($data["runtime"]) || $data["runtime"] == "") {
+            $messages["runtime"] = "Runtime is required";
+        } else if(!is_numeric($data["runtime"]) || $data["runtime"] <= 0) {
+            $messages["runtime"] = $data["runtime"]." is not a valid runtime";
+        }
+        if(!isset($data["genres"]) || $data["genres"] == "") {
+            $messages["genres"] = "Genre is required";
+        }
+        if(!isset($data["crew"]) || $data["crew"] == "") {
+            $messages["crew"] = "Crew is required";
+        }
+        if(!isset($data["directors"]) || $data["directors"] == "") {
+            $messages["directors"] = "Director is required";
+        }
+
+        return $messages;
+    }
 }

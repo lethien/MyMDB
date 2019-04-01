@@ -19,6 +19,7 @@ Page::page_head(true);
 
 // TODO: get movies list based on search term in POST
 $moviesList = array();
+$allMovies = array();
 
 
 if(!empty($_POST['search']))

@@ -78,7 +78,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         
         
         //Add book to DB
-        $result = MovieMapper::addMovie($movie);
+        $result = MovieMapper::createMovie($movie);
 
         //Return result
         header('Content-Type: application/json');

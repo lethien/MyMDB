@@ -155,7 +155,7 @@ class Page {
                             isset($validateMessages['newusername']) ? $validateMessages['newusername'] : "");
                         self::renderFormInputField("newemail", "Email", 
                             isset($_POST['newemail']) ? $_POST['newemail'] : "", 
-                            isset($validateMessages['newemail']) ? $validateMessages['newemail'] : "");
+                            isset($validateMessages['newemail']) ? $validateMessages['newemail'] : "", "email");
                         self::renderFormInputField("newpassword", "Password", 
                             "", 
                             isset($validateMessages['newpassword']) ? $validateMessages['newpassword'] : "", "password");
@@ -331,6 +331,62 @@ class Page {
                 </div>
             </div>
         <?php
+    }
+
+    public static function render_movie_form($movie, $validateMessages, $message, $messageSeverity) {
+        if($movie != null && $movie->getMovieID() > 0) {
+            $formtitle = "Edit Movie - ID: ".$movie->getMovieID();
+            $submitbutton = "Update";
+            $formaction = "update";
+        } else {
+            $formtitle = "Add Movie";
+            $submitbutton = "Add";
+            $formaction = "add";
+        }
+
+        ?>
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <h4><?php echo $formtitle; ?></h4>
+                    <?php self::messagearea($message, $messageSeverity); ?>
+                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                        <input type="hidden" name="action" value="<?php echo $formaction; ?>" >                    
+                        <?php
+                            self::renderFormInputField("title", "Title", 
+                                $movie->getTitle(),
+                                isset($validateMessages['title']) ? $validateMessages['title'] : "");
+                            self::renderFormInputField("poster", "Poster URL", 
+                                $movie->getPosterURL(),
+                                isset($validateMessages['poster']) ? $validateMessages['poster'] : "");
+                            self::renderFormInputField("summary", "Plot Summary", 
+                                $movie->getSummary(),
+                                isset($validateMessages['summary']) ? $validateMessages['summary'] : "");
+                            self::renderFormInputField("runtime", "Runtime (in minutes)", 
+                                $movie->getRuntime(), 
+                                isset($validateMessages['runtime']) ? $validateMessages['runtime'] : "", "number");
+                            self::renderFormInputField("genres", "Genres", 
+                                $movie->getGenres(),
+                                isset($validateMessages['genres']) ? $validateMessages['genres'] : "");
+                            self::renderFormInputField("crew", "Crews", 
+                                $movie->getCrew(),
+                                isset($validateMessages['crew']) ? $validateMessages['crew'] : "");
+                            self::renderFormInputField("directors", "Directors", 
+                                $movie->getDirectors(),
+                                isset($validateMessages['directors']) ? $validateMessages['directors'] : "");
+                            self::renderFormInputField("awards", "Awards", 
+                                $movie->getAwards(),
+                                isset($validateMessages['awards']) ? $validateMessages['awards'] : "");
+                        ?>
+                        <input class="button-primary u-pull-right" type="reset" value="Reset" style="margin-left: 30px">
+                        <input class="button-primary u-pull-right" type="submit" value="<?php echo $submitbutton; ?>">
+                    </form>
+                </div>
+            </div>
+        <?php
+    }
+
+    public static function render_movie_detail($movie, $reviews, $editable) {
+        
     }
 }
 

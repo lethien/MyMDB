@@ -64,13 +64,12 @@ class MovieMapper {
         return true;
 
     }
-	static function createMovie(Book $newMovie) : int   {
-        $sqlInsert = "INSERT INTO Movie (MovieID, Title, PosterUrl, Summary, Runtime, Genres, Crew,Directors,Awards, CreatedBy) 
-		VALUES (:MovieID, :Title, :Poster, :Summary, ;Runtime, :Genres, :Crew, :Directors, :Awards, :CreatedBy)";
+	static function createMovie(Movie $newMovie) : int   {
+        $sqlInsert = "INSERT INTO Movie (Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy) 
+		VALUES (:Title, :Poster, :Summary, :Runtime, :Genres, :Crew, :Directors, :Awards, :CreatedBy)";
 
         self::$db->query($sqlInsert);
 
-        self::$db->bind(':MovieID', $newMovie->getMovieID());
 		self::$db->bind(':Title', $newMovie->getTitle());
 		self::$db->bind(':Poster', $newMovie->getPosterURL());
 		self::$db->bind(':Summary', $newMovie->getSummary());
