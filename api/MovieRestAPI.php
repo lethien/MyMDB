@@ -12,7 +12,8 @@ parse_str(file_get_contents('php://input'), $requestData);
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        if (isset($requestData['title']))  {
+        
+		if (isset($requestData['title']))  {
 
         $title = $requestData['title'];
         $movie = MovieMapper::getMovie($title);
@@ -43,20 +44,71 @@ switch($_SERVER['REQUEST_METHOD']) {
     }
     
     break;
+
+	case "POST":
+
+    
+        //New Movie
+        $movie = new Movie();
+        $movie->setTitle($requestData['title']);
+		$movie->setPosterURL($requestData['poster']);
+		$movie->setSummary($requestData['summary']);
+		$movie->setRuntime($requestData['runtime']);
+		$movie->setGenres($requestData['genres']);
+		$movie->setCrew($requestData['crew']);
+		$movie->setDirectors($requestData['directors']);
+		$movie->setAwards($requestData['awards']);
+		$movie->setCreatedBy($requestData['createdBy']);
         
-        break;
-    case 'POST':
+        
+        //Add book to DB
+        $result = MovieMapper::addMovie($movie);
+
+        //Return result
+        header('Content-Type: application/json');
+        //Return the result.
+        echo json_encode($result);
         
 
-        break;
-    case 'PUT':
-        
+    break;
+		
+        case "PUT":
+        //this is used to submit an edited entity
+        $movie = new Movie();
+		$movie->setMovieID($requestData['id']);
+        $movie->setTitle($requestData['title']);
+		$movie->setPosterURL($requestData['poster']);
+		$movie->setSummary($requestData['summary']);
+		$movie->setRuntime($requestData['runtime']);
+		$movie->setGenres($requestData['genres']);
+		$movie->setCrew($requestData['crew']);
+		$movie->setDirectors($requestData['directors']);
+		$movie->setAwards($requestData['awards']);
+		$movie->setCreatedBy($requestData['createdBy']);
 
-        break;
-    case 'DELETE':        
-        
+        $result = MovieMapper::updateMovie($movie);
+    
+        header('Content-Type: application/json');
+        //Return the result.
+        echo json_encode($result);
+    
+    
+    break;
+    
+    //Delete all the things!
+    case "DELETE":
+    
+        $title = $requestData['title'];
+        $result = MovieMapper::deleteMovie($title);
 
-        break;
+        header('Content-Type: application/json');
+        echo json_encode($result);
+
+    break;
+    
+    default:
+
+        echo json_encode(array("message" => "Voce fala HTTP?"));
+    break;
 }
-
 ?>
