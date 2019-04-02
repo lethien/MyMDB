@@ -42,6 +42,8 @@ foreach ($jmovies as $m) {
     $movie->setDirectors($m->Directors);
     $movie->setAwards($m->Awards);
     $movie->setCreatedBy($m->CreatedBy);
+    $movie->setReviewNumber($m->ReviewNumber);
+    $movie->setRating($m->Rating);
     
     $moviesList[] = $movie;        
 }

@@ -18,7 +18,11 @@ class MovieMapper {
     }
 	
 	static function getMovies() : Array {        
-        $selectAll = "SELECT MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy FROM Movie";
+        $selectAll = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy";
 
         self::$db->query($selectAll);
         self::$db->execute();
@@ -26,7 +30,12 @@ class MovieMapper {
     }
 	
 	static function getMovie(string $title) {        
-        $sqlSelect = "SELECT MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy FROM Movie WHERE Title = :Title";
+        $sqlSelect = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID 
+        WHERE Title = :Title
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy";
         //Query
         self::$db->query($sqlSelect);
         //Bind
@@ -38,7 +47,12 @@ class MovieMapper {
     }
 
     static function getMovieById(string $id) {
-        $sqlSelect = "SELECT MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy FROM Movie WHERE MovieID = :MovieID";
+        $sqlSelect = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID 
+        WHERE M.MovieID = :MovieID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy";
         //Query
         self::$db->query($sqlSelect);
         //Bind
@@ -124,15 +138,18 @@ class MovieMapper {
 	static function seachMovie(string $search)    {
         
         //this should search all the fields that are not numbers
-        $sqlSelect = "SELECT MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy 
-        FROM movie WHERE 
-        CONVERT(`Title` USING utf8) LIKE '%$search%' 
+        $sqlSelect = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID         
+        WHERE CONVERT(`Title` USING utf8) LIKE '%$search%' 
         OR CONVERT(`Poster` USING utf8) LIKE '%$search%' 
         OR CONVERT(`PlotSummary` USING utf8) LIKE '%$search%' 
         OR CONVERT(`Genres` USING utf8) LIKE '%$search%' 
         OR CONVERT(`Crew` USING utf8) LIKE '%$search%' 
         OR CONVERT(`Directors` USING utf8) LIKE '%$search%' 
-        OR CONVERT(`Awards` USING utf8) LIKE '%$search%';"; 
+        OR CONVERT(`Awards` USING utf8) LIKE '%$search%' 
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy"; 
         //Query
         self::$db->query($sqlSelect);
 

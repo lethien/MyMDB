@@ -276,19 +276,23 @@ class Page {
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <img style="float: left;height: 250px;width: 150px;margin-right: 20px;" 
-                            src="<?php echo $movie->getPosterURL(); ?>" />
+                            src="<?php echo $movie->getPosterURL(); ?>"
+                            alt="<?php echo $movie->getTitle(); ?> Poster"
+                            title="<?php echo $movie->getTitle(); ?> Poster" />
                     <h4>
                         <?php echo $movie->getTitle(); ?>                                                        
                         <a href="MovieInfo.php?movieid=<?php echo $movie->getMovieID(); ?>&action=edit" class="button-primary u-pull-right">Edit Movie</a>
                     </h4> 
                     <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
                     <p>Genres: <?php echo $movie->getGenres(); ?></p>
-                    <p>Directors: <?php echo $movie->getDirectors(); ?></p>
-                    <p>Cast: <?php echo $movie->getCrew(); ?></p>                   
+                    <p>Reviews: <?php echo $movie->getReviewNumber(); ?></p>
+                    <p>Rating: <?php echo $movie->getRatingFormated(); ?></p>
                 </div>  
             </div>
             <div class="row" style="margin-top: 30px"> 
                 <div class="one-full column">
+                    <p><b>Directors:</b> <?php echo $movie->getDirectors(); ?></p>
+                    <p><b>Cast:</b> <?php echo $movie->getCrew(); ?></p>
                     <p><b>Summary:</b> <?php echo $movie->getSummary(); ?></p>
                     <p><b>Awards:</b> <?php echo $movie->getAwards(); ?></p>
                 </div>             
@@ -301,7 +305,9 @@ class Page {
             <div class="one-half column" style="padding: 10px;border: 1px solid lightgray;">
                 <div class="one-full column">
                     <img style="float: left;height: 250px;width: 150px;margin-right: 20px;" 
-                            src="<?php echo $movie->getPosterURL(); ?>" />
+                            src="<?php echo $movie->getPosterURL(); ?>" 
+                            alt="<?php echo $movie->getTitle(); ?> Poster"
+                            title="<?php echo $movie->getTitle(); ?> Poster" />
                     <p><b>
                         <a href="MovieInfo.php?movieid=<?php echo $movie->getMovieID(); ?>">
                             <?php echo $movie->getTitle(); ?>
@@ -309,8 +315,8 @@ class Page {
                     </b></p>
                     <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
                     <p>Genres: <?php echo $movie->getGenres(); ?></p>
-                    <p>Directors: <?php echo $movie->getDirectors(); ?></p>
-                    <p>Cast: <?php echo $movie->getCrew(); ?></p>
+                    <p>Reviews: <?php echo $movie->getReviewNumber(); ?></p>
+                    <p>Rating: <?php echo $movie->getRatingFormated(); ?></p>
                 </div>
             </div>
         <?php
@@ -353,7 +359,14 @@ class Page {
         ?>
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
-                    <h4><?php echo $formtitle; ?></h4>
+                    <h4>
+                        <?php echo $formtitle; ?>
+                        <?php
+                            if($movie != null && $movie->getMovieID() > 0) {
+                                echo '<a href="MovieInfo.php?movieid='.$movie->getMovieID().'" class="button-primary u-pull-right">Cancel Edit</a>';
+                            }                        
+                        ?>
+                    </h4>
                     <?php self::messagearea($message, $messageSeverity); ?>
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
                         <input type="hidden" name="movieid" value="<?php echo $movie->getMovieID(); ?>" >

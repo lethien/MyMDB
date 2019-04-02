@@ -94,6 +94,25 @@ class Movie {
         $this->CreatedBy = $id;
     }
 
+    // Attributes used for statistic
+    private $ReviewNumber;
+    private $Rating;
+    public function getReviewNumber() {
+        return $this->ReviewNumber;
+    }
+    public function setReviewNumber($number) {
+        $this->ReviewNumber = $number;
+    }
+    public function getRating() {
+        return $this->Rating;
+    }
+    public function getRatingFormated() {
+        return number_format($this->Rating, 2);
+    }
+    public function setRating($rating) {
+        $this->Rating = $rating;
+    }
+
     // for JSON serialize
     function jsonSerialize() {
 		// Add selected properties to a standard class
@@ -107,9 +126,13 @@ class Movie {
         $obj->Crew = $this->getCrew();
 		$obj->Directors = $this->getDirectors();
 		$obj->Awards = $this->getAwards();
-		$obj->CreatedBy = $this->getCreatedBy();
-        return $obj;
+        $obj->CreatedBy = $this->getCreatedBy();
         
+        // Statistic attributes
+        $obj->ReviewNumber = $this->getReviewNumber();
+        $obj->Rating = $this->getRating();
+
+        return $obj;        
     }
 }
 

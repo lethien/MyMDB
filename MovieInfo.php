@@ -47,6 +47,8 @@ if(isset($_GET['movieid'])) {
         $movie->setDirectors($jRequestedMovie->Directors);
         $movie->setAwards($jRequestedMovie->Awards);
         $movie->setCreatedBy($jRequestedMovie->CreatedBy);
+        $movie->setReviewNumber($jRequestedMovie->ReviewNumber);
+        $movie->setRating($jRequestedMovie->Rating);
 
         if(isset($_GET['action']) && $_GET['action'] == "edit") {
             // Render edit movie form
