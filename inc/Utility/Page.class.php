@@ -246,67 +246,73 @@ class Page {
         ?>
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
-                    <h4>Movie List - <?php echo count($movies) ?> results - <?php if(isset($_POST['search'])) echo 'Search term: '.$_POST['search']; ?></h4>
-                </div>
+                    <h4>
+                        Movie List - <?php echo count($movies) ?> results<?php if(isset($_POST['search'])) echo ' - Search term: '.$_POST['search']; ?>
+                        <a href="MovieInfo.php" class="button-primary u-pull-right">Add Movie</a>
+                    </h4>
+                    
+                </div>                
             </div>
 
             <?php 
-            if (count($movies) > 0)
-        {
-                echo '<table class="u-full-width">
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Poster</th>
-                            <th>PlotSummary</th>
-                            <th>Runtime</th>
-                            <th>Genres</th>
-                            <th>Crew</th>
-                            <th>Directors</th>
-                            <th>Awards</th>
-                        </tr>
-                        </thead>
-                        <tbody>';
+                if (count($movies) > 0) {
+                    echo '<div class="row" style="margin-top: 30px">';
+                    
+                    foreach ($movies as $movie)    {
+                        self::render_movie_card($movie);
+                    }
 
-        foreach ($movies as $movie)    {
-            echo '  <tr>
-            <td>'.$movie->getTitle().'</td>
-            <td>'.$movie->getPosterURL().'</td>
-            <td>'.$movie->getSummary().'</td>
-            <td>'.$movie->getRuntime().'</td>
-            <td>'.$movie->getGenres().'</td> 
-            <td>'.$movie->getCrew().'</td>
-            <td>'.$movie->getDirectors().'</td> 
-            <td>'.$movie->getAwards().'</td>       
-            </tr>';
-        }
-        
-        echo '</tbody>
-        </table>';
-    }
+                    echo '</div>';
+                } else {
+                    self::messagearea("There is no movie to display.");
+                }
             ?>
-            <form method="POST" ACTION="<?php echo $_SERVER["PHP_SELF"]; ?>">
-        <div class="row">
-
-
-            <div class="eight columns">
-            <label for="Title">Search</label>
-            <input class="u-full-width" type="text" id="search" name="search">
             
-            
-            <input class="button-primary" type="submit" value="Submit">
+        <?php
+    }
+
+    public static function render_movie_detail($movie) {
+        ?>
+            <div class="row" style="margin-top: 30px">
+                <div class="one-full column">
+                    <img style="float: left;height: 250px;width: 150px;margin-right: 20px;" 
+                            src="<?php echo $movie->getPosterURL(); ?>" />
+                    <h4>
+                        <?php echo $movie->getTitle(); ?>                                                        
+                        <a href="MovieInfo.php?movieid=<?php echo $movie->getMovieID(); ?>&action=edit" class="button-primary u-pull-right">Edit Movie</a>
+                    </h4> 
+                    <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
+                    <p>Genres: <?php echo $movie->getGenres(); ?></p>
+                    <p>Directors: <?php echo $movie->getDirectors(); ?></p>
+                    <p>Cast: <?php echo $movie->getCrew(); ?></p>                   
+                </div>  
             </div>
-          
+            <div class="row" style="margin-top: 30px"> 
+                <div class="one-full column">
+                    <p><b>Summary:</b> <?php echo $movie->getSummary(); ?></p>
+                    <p><b>Awards:</b> <?php echo $movie->getAwards(); ?></p>
+                </div>             
+            </div>
+        <?php
+    }
 
-        </div>
-        
-        </form>
-
-
-
-
-
-
+    private static function render_movie_card($movie) {
+        ?>
+            <div class="one-half column" style="padding: 10px;border: 1px solid lightgray;">
+                <div class="one-full column">
+                    <img style="float: left;height: 250px;width: 150px;margin-right: 20px;" 
+                            src="<?php echo $movie->getPosterURL(); ?>" />
+                    <p><b>
+                        <a href="MovieInfo.php?movieid=<?php echo $movie->getMovieID(); ?>">
+                            <?php echo $movie->getTitle(); ?>
+                        </a>
+                    </b></p>
+                    <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
+                    <p>Genres: <?php echo $movie->getGenres(); ?></p>
+                    <p>Directors: <?php echo $movie->getDirectors(); ?></p>
+                    <p>Cast: <?php echo $movie->getCrew(); ?></p>
+                </div>
+            </div>
         <?php
     }
 
@@ -350,7 +356,8 @@ class Page {
                     <h4><?php echo $formtitle; ?></h4>
                     <?php self::messagearea($message, $messageSeverity); ?>
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-                        <input type="hidden" name="action" value="<?php echo $formaction; ?>" >                    
+                        <input type="hidden" name="movieid" value="<?php echo $movie->getMovieID(); ?>" >
+                        <input type="hidden" name="action" value="<?php echo $formaction; ?>" >
                         <?php
                             self::renderFormInputField("title", "Title", 
                                 $movie->getTitle(),
@@ -383,10 +390,6 @@ class Page {
                 </div>
             </div>
         <?php
-    }
-
-    public static function render_movie_detail($movie, $reviews, $editable) {
-        
     }
 }
 

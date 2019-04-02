@@ -29,24 +29,7 @@ class Movie {
 	private $Directors;
 	private $Awards;
     private $CreatedBy;
-    
-    // Constructor
-   /*
-    public function __construct() {
-        $this->setMovieID(0);
-        $this->setTitle("");
-        $this->setPosterURL("");
-        $this->setSummary("");
-        $this->setRuntime(0);
-        $this->setGenres("");
-        $this->setCrew("");
-        $this->setDirectors("");
-        $this->setAwards("");
-        $this->setCreatedBy(0);
-    }
-    */
-    
-    
+        
 	// Getters
 	public function getMovieID() : int {
         return $this->MovieID;
