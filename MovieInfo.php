@@ -167,7 +167,19 @@ if(isset($_GET['movieid'])) { // GET requests
         }
         // Redirect to show movie detail page
         header('Location: MovieInfo.php?movieid='.$_POST['movieID']);
-    }    
+    } else if(isset($_POST['action']) && $_POST['action'] == "delete_review") { // Delete a review        
+        // Delete review in DB through RestAPI call
+        $deleteReview = json_decode(RestClient::call(REVIEW_API, "DELETE", $_POST));
+        if($deleteReview) { // Delete review success
+            $_SESSION['review_message'] = "Your review has been deleted";
+            $_SESSION['messageSeverity'] = 'success';
+        } else {
+            $_SESSION['review_message'] = "Review not deleted! Try again later";
+        }
+        
+        // Redirect to show movie detail page
+        header('Location: MovieInfo.php?movieid='.$_POST['movieID']);
+    } 
 }
 
 // Page header

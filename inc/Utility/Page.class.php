@@ -298,10 +298,10 @@ class Page {
                         <?php echo $movie->getTitle(); ?>                                                        
                         <a href="MovieInfo.php?movieid=<?php echo $movie->getMovieID(); ?>&action=edit" class="button-primary u-pull-right">Edit Movie</a>
                     </h4> 
-                    <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
-                    <p>Genres: <?php echo $movie->getGenres(); ?></p>
-                    <p>Reviews: <?php echo $movie->getReviewNumber(); ?></p>
-                    <p>Rating: <?php echo $movie->getRatingFormated(); ?></p>
+                    <p><b>Runtime:</b> <?php echo $movie->getRuntime(); ?> minutes</p>
+                    <p><b>Genres:</b> <?php echo $movie->getGenres(); ?></p>
+                    <p><b>Reviews:</b> <?php echo $movie->getReviewNumber(); ?></p>
+                    <p><b>Rating:</b> <?php echo $movie->getRatingFormated(); ?></p>
                 </div>  
             </div>
             <div class="row" style="margin-top: 30px"> 
@@ -317,8 +317,14 @@ class Page {
                 <div class="one-full column">
                     <?php
                         if($review->getRating() > 0) { // if user already reviewed this movie, show review
-                    ?>
-                        <b>Your Review: <?php echo $review->getRating(); ?> Stars.</b>
+                    ?>                        
+                        <form id="delete_review_form" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                            <b>Your Review: <?php echo $review->getRating(); ?> Stars.</b>
+                            <input type="hidden" name="userID" value="<?php echo $review->getUserID(); ?>" >
+                            <input type="hidden" name="movieID" value="<?php echo $review->getMovieID(); ?>" >
+                            <input type="hidden" name="action" value="delete_review" >
+                            <a style="float:right;" href="javascript:document.getElementById('delete_review_form').submit();">Delete Review</a>                        
+                        </form>
                         <p><?php echo $review->getReview(); ?></p>                        
                     <?php
                         } else { // if user haven't reviewed this movie, show form for user to leave a review
@@ -342,7 +348,7 @@ class Page {
                                     <input type="text" class="u-full-width" name="review" value="">
                                 </div>
                                 <div class="u-full-width">
-                                <input class="button-primary u-pull-right" type="submit" value="Leave Review">
+                                    <input class="button-primary u-pull-right" type="submit" value="Leave Review">
                                 </div>
                             </form>
                         </div>
@@ -389,10 +395,10 @@ class Page {
                             <?php echo $movie->getTitle(); ?>
                         </a>
                     </b></p>
-                    <p>Runtime: <?php echo $movie->getRuntime(); ?> minutes</p>
-                    <p>Genres: <?php echo $movie->getGenres(); ?></p>
-                    <p>Reviews: <?php echo $movie->getReviewNumber(); ?></p>
-                    <p>Rating: <?php echo $movie->getRatingFormated(); ?></p>
+                    <p><b>Runtime:</b> <?php echo $movie->getRuntime(); ?> minutes</p>
+                    <p><b>Genres:</b> <?php echo $movie->getGenres(); ?></p>
+                    <p><b>Rating:</b> <?php echo $movie->getRatingFormated(); ?><?php if($movie->getReviewNumber() > 1) echo ' ('.$movie->getReviewNumber().' Reviews)'; ?></p>
+                    <p><b>Cast:</b> <?php echo $movie->getCrew(); ?></p>
                 </div>
             </div>
         <?php
