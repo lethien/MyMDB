@@ -7,59 +7,62 @@ require_once('../inc/EntityMapper/MovieMapper.class.php');
 
 MovieMapper::initialize();
 
-
 // Pull request data from the input stream
 parse_str(file_get_contents('php://input'), $requestData);
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':        
-		if (isset($requestData['title']))  {
+        if (isset($requestData['title']))  { // Get movie by title
+            // Retrieve movie from database
             $title = $requestData['title'];
             $movie = MovieMapper::getMovie($title);
 
-            $jsonMovie = $movie->jsonSerialize();
+            // Serialize movie object to standard class
+            $jsonMovie = ($movie != false) ? $movie->jsonSerialize() : null;
             
+            // Return the movie in JSON format
             header('Content-Type: application/json');
             echo json_encode($jsonMovie);
-		} else if (isset($requestData['movieid']))  {
+        } else if (isset($requestData['movieid']))  { // Get movie by movie ID
+            // Retrieve movie from database
             $id = $requestData['movieid'];
             $movie = MovieMapper::getMovieById($id);
 
+            // Serialize movie object to standard class 
             $jsonMovie = ($movie != false) ? $movie->jsonSerialize() : null;
             
+            // Return the movie in JSON format
             header('Content-Type: application/json');
             echo json_encode($jsonMovie);
-		} else if(isset($requestData['search'])){
+        } else if(isset($requestData['search'])){ // Get movies list by search term
+            // Retrieve movies list from database
             $moviesFound = MovieMapper::SeachMovie($requestData['search']);
+            
+            //Go through all the movies and add them to the serialized array
             $serializedList = array();
-
             foreach ($moviesFound as $movie)   
             {
                 $serializedList[] = $movie->jsonSerialize();
             }
 
-            //Set the header
+            // Return the movies array in JSON format
             header('Content-Type: application/json');
-            //Return all the movie!
             echo json_encode($serializedList);
-        } else {
-            //Get all the movies
-            $movies = MovieMapper::getMovies();
-            //Initialize an array to hold the serialized movies
-            $serializedMovies = array();
-
+        } else { //Get all the movies    
+            // Retrieve movies list from database        
+            $movies = MovieMapper::getMovies();            
+            
             //Go through all the movies and add them to the serialized array
+            $serializedMovies = array();
             foreach ($movies as $movie)   
             {
                 $serializedMovies[] = $movie->jsonSerialize();
             }
             
-            //Set the header
+            // Return the movies array in JSON format
             header('Content-Type: application/json');
-            //Return all the movie!
             echo json_encode($serializedMovies);
         }
-    
         break;
 
 	case "POST":
@@ -75,12 +78,11 @@ switch($_SERVER['REQUEST_METHOD']) {
 		$movie->setAwards($requestData['awards']);
 		$movie->setCreatedBy($requestData['createdBy']);
         
-        //Add book to DB
+        //Add movie to DB
         $result = MovieMapper::createMovie($movie);
 
-        //Return result
+        //Return the result
         header('Content-Type: application/json');
-        //Return the result.
         echo json_encode($result);
         break;
 
@@ -97,18 +99,19 @@ switch($_SERVER['REQUEST_METHOD']) {
 		$movie->setDirectors($requestData['directors']);
 		$movie->setAwards($requestData['awards']);
 
+        // Update movie in DB
         $result = MovieMapper::updateMovie($movie);
     
+        //Return the result
         header('Content-Type: application/json');
-        //Return the result.
         echo json_encode($result);
         break;
-    
-    //Delete all the things!
-    case "DELETE":        
+    case "DELETE":
+        //Delete movie by title
         $title = $requestData['title'];
         $result = MovieMapper::deleteMovie($title);
 
+        //Return the result
         header('Content-Type: application/json');
         echo json_encode($result);
         break;

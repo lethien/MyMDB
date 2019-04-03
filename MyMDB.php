@@ -14,12 +14,14 @@ Page::$title = "MyMDB - Home";
 Page::header();
 Page::page_head(true);
 
+// Get Home page Statistic through RestAPI call
 $homePageStat = json_decode(RestClient::call(STATISTIC_API, "GET", array("object" => 'home_page')));
 
+// Loop through returned top rating movies
 $jTopRatingMovies = $homePageStat->topRatingMovies;
 $topRatingMovies = array();
 foreach ($jTopRatingMovies as $m) {
-    //Assemble a new movie
+    //Assemble a new movie object
     $movie = new Movie();
     $movie->setMovieID($m->MovieID);
     $movie->setTitle($m->Title);
@@ -34,9 +36,11 @@ foreach ($jTopRatingMovies as $m) {
     $movie->setReviewNumber($m->ReviewNumber);
     $movie->setRating($m->Rating);
     
+    //Add to display top rating movies array
     $topRatingMovies[] = $movie;        
 }
 
+// Loop through returned top reviewed movies
 $jTopReviewedMovies = $homePageStat->topReviewedMovies;
 $topReviewedMovies = array();
 foreach ($jTopReviewedMovies as $m) {
@@ -55,9 +59,11 @@ foreach ($jTopReviewedMovies as $m) {
     $movie->setReviewNumber($m->ReviewNumber);
     $movie->setRating($m->Rating);
     
+    //Add to display top reviewed movies array
     $topReviewedMovies[] = $movie;        
 }
 
+// Render home page content
 Page::render_homepage($homePageStat, $topRatingMovies, $topReviewedMovies);
 
 // Page footer

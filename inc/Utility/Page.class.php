@@ -46,9 +46,11 @@ class Page {
         <?php
     }
 
+    // Render page header which include logo, user links and search bar
     public static function page_head($isLoggedin = false) {
         ?>
             <div class="row">
+                <!-- Page main logo, also link to home page -->
                 <div class="one-half column" style="margin-top: 50px">  
                     <a href="<?php echo HOME_PAGE;?>" style="color: black;text-decoration: none;">                                      
                         <h3><img src="images/pageicon.png" 
@@ -57,7 +59,8 @@ class Page {
                         </h3>
                     </a>
                 </div>
-                <div class="one-half column" style="margin-top: 50px">                                        
+                <div class="one-half column" style="margin-top: 50px">  
+                <!-- If user has logged in, show Welcome user message along with links for user detail and logout -->                                      
                     <?php
                         if($isLoggedin) {
                             ?>
@@ -72,6 +75,7 @@ class Page {
                 </div>
             </div>
 
+            <!-- If user has logged in, show movie search bar --> 
             <?php
                 if($isLoggedin) {
                     ?>
@@ -115,6 +119,7 @@ class Page {
         <?php
     }
 
+    // Render content of Authenticate.php
     public static function authenticateForm($validateMessages) {
         echo '<div class="row">';
         self::loginform($validateMessages);
@@ -123,6 +128,7 @@ class Page {
         echo '</div>';
     }
 
+    // Render Login form
     public static function loginform($validateMessages) {        
         ?>
             <div class="five columns">
@@ -143,6 +149,7 @@ class Page {
         <?php
     }
 
+    // Render Register form
     public static function registerForm($validateMessages) {  
         ?>
             <div class="five columns">
@@ -169,6 +176,7 @@ class Page {
         <?php
     }
 
+    // Utility method to render form input field
     public static function renderFormInputField($fieldID, $fieldLabel, $fieldDefaultValue, $fieldValidation, $fieldType = "text") {
         ?>
             <div class="row">
@@ -176,10 +184,13 @@ class Page {
                     <label for="<?php echo $fieldID; ?>"><?php echo $fieldLabel; ?>: </label>
                     <input class="u-full-width" type="<?php echo $fieldType; ?>"
                     <?php
+                        // If there is a validation issue on this input field, change background-color and show message as placeholder
                         if($fieldValidation != "") {
                             echo ' style="border-color: #721c24;background-color: #f8d7da" ';
                             echo ' placeholder="'. $fieldValidation .'" ';
-                        } else {
+                        } 
+                        // If there is no validation issue on this input field, set value as default value
+                        else {
                             echo ' value="'. $fieldDefaultValue .'" ';
                         }
                     ?>
@@ -189,6 +200,7 @@ class Page {
         <?php
     }
 
+    // Show message (can be error or success message)
     public static function messagearea($message = null, $severity = "error") {        
         ?>
             <div class="row">
@@ -217,8 +229,10 @@ class Page {
         <?php
     }
 
+    // Render content of MyMDB.php
     public static function render_homepage($homePageStat, $topRatingMovies, $topReviewedMovies) {
         ?>
+            <!-- MyMDB statistic infos -->
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>MyMDB information:</h4>
@@ -228,6 +242,7 @@ class Page {
                 </div>
             </div>
 
+            <!-- MyMDB top rating movies -->
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>Highest Rating:</h4>
@@ -237,6 +252,7 @@ class Page {
                 self::render_movies_rows($topRatingMovies);
             ?>
 
+            <!-- MyMDB most reviewed movies -->
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>Most Reviewed:</h4>
@@ -248,6 +264,7 @@ class Page {
         <?php
     }
 
+    //Render content of MoviesList.php
     public static function render_movie_list($movies) {
         ?>
             <div class="row" style="margin-top: 30px">
@@ -267,8 +284,10 @@ class Page {
         <?php
     }
 
+    //Render content of MovieInfo.php in case of a GET request
     public static function render_movie_detail($movie, $review, $reviewMessage, $reviewMessageSeverity) {
         ?>
+            <!-- Movie Infos Fields-->
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <img style="float: left;height: 250px;width: 150px;margin-right: 20px;" 
@@ -293,15 +312,16 @@ class Page {
                     <p><b>Awards:</b> <?php echo $movie->getAwards(); ?></p>
                 </div>             
             </div>
+            <!-- Current User's review on this movie -->
             <div class="row" style="margin-top: 30px"> 
                 <div class="one-full column">
                     <?php
-                        if($review->getRating() > 0) {
+                        if($review->getRating() > 0) { // if user already reviewed this movie, show review
                     ?>
                         <b>Your Review: <?php echo $review->getRating(); ?> Stars.</b>
                         <p><?php echo $review->getReview(); ?></p>                        
                     <?php
-                        } else {
+                        } else { // if user haven't reviewed this movie, show form for user to leave a review
                     ?>                        
                         <div class="u-full-width">
                             <b>Leave a Review:</b>
@@ -332,6 +352,7 @@ class Page {
                 </div>             
             </div>
             <?php
+            // If there is a message for review form, show here
             if($reviewMessage != null && $reviewMessage != "") {
                 self::messagearea($reviewMessage, $reviewMessageSeverity);
             }
@@ -339,9 +360,11 @@ class Page {
         <?php
     }
 
+    // Utility method to render list of movies in rows of movie cards
     private static function render_movies_rows($movies) {         
         if (count($movies) > 0) {                                
             for ($i=0; $i<count($movies); $i++) {
+                // Since each movie card takes half width of row, render 2 movie cards for each row
                 if($i % 2 == 0) echo '<div class="row" style="margin-top: 30px">';
                 $movie = $movies[$i];
                 self::render_movie_card($movie);
@@ -352,6 +375,7 @@ class Page {
         }         
     }
 
+    // Utility method to render movie brief info in card form
     private static function render_movie_card($movie) {
         ?>
             <div class="one-half column" style="padding: 10px;border: 1px solid lightgray;">
@@ -374,21 +398,27 @@ class Page {
         <?php
     }
 
+    // Render content of UserDetail.php
     public static function render_user_detail($userDetailStat, $topRatingMovies) {
         ?>
             <div class="row" style="margin-top: 30px">
+                <!-- User infos -->
                 <div class="one-half column">
                     <h4>User information:</h4>
                     <p>User ID: <?php echo LoginManager::getLoggedinUser()->getUserID(); ?></p>
                     <p>User Name: <?php echo LoginManager::getLoggedinUser()->getUserName(); ?></p>
                     <p>Email: <?php echo LoginManager::getLoggedinUser()->getEmail(); ?></p>
                 </div>
+
+                <!-- User Activity Statistic -->
                 <div class="one-half column">
                     <h4>User Activity:</h4>
                     <p>Movies Created: <?php echo $userDetailStat->moviesCount; ?></p>
                     <p>Reviewed: <?php echo $userDetailStat->reviewsCount; ?></p>
                 </div>
-            </div>            
+            </div> 
+
+            <!-- User favorite movies -->           
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>Favorite Movies:</h4>
@@ -400,12 +430,13 @@ class Page {
         <?php
     }
 
+    // Render content of MovieInfo.php in case of Add or Edit movie
     public static function render_movie_form($movie, $validateMessages, $message, $messageSeverity) {
-        if($movie != null && $movie->getMovieID() > 0) {
+        if($movie != null && $movie->getMovieID() > 0) { // This is an existed movie
             $formtitle = "Edit Movie - ID: ".$movie->getMovieID();
             $submitbutton = "Update";
             $formaction = "update";
-        } else {
+        } else { // This is a new movie
             $formtitle = "Add Movie";
             $submitbutton = "Add";
             $formaction = "add";

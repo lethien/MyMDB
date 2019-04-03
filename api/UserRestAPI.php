@@ -12,7 +12,7 @@ parse_str(file_get_contents('php://input'), $requestData);
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        if(isset($requestData['id'])) {
+        if(isset($requestData['id'])) { // Get user by ID
             // Get all requested user from database
             $user = UserMapper::getUser($requestData['id']);
 
@@ -22,7 +22,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             // Return the serialized user
             header("Content-Type: application/json");
             echo json_encode($serializedUser);
-        } else if(isset($requestData['username'])) {
+        } else if(isset($requestData['username'])) { // Get user by username
             // Get all requested user from database
             $user = UserMapper::getUserName($requestData['username']);
 
@@ -49,29 +49,38 @@ switch($_SERVER['REQUEST_METHOD']) {
         
         break;
     case 'POST':
+        // For adding a new user
         $user = new User();
         $user->setUserName($requestData['newusername']);
         $user->setNewPassword($requestData['newpassword']);
         $user->setEmail($requestData['newemail']);
 
+        // Add user to DB
         $nuID = UserMapper::addUser($user);
+
+        // Return the result
         header("Content-Type: application/json");
         echo json_encode($nuID);
 
         break;
     case 'PUT':
+        // For updating a user
         $user = new User();
         $user->setUserID($requestData['id']);
         $user->setUserName($requestData['username']);
         $user->setPassword($requestData['password']);
         $user->setEmail($requestData['email']);
 
+        // Perform update
         $result = UserMapper::updateUser($user);
+
+        // Return the result
         header("Content-Type: application/json");
         echo json_encode($result);
 
         break;
-    case 'DELETE':        
+    case 'DELETE':  
+        // Delete the user by ID     
         $result = UserMapper::deleteUser($requestData['id']);
         header("Content-Type: application/json");
         echo json_encode($result);

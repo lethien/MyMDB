@@ -34,11 +34,12 @@ $movie->setDirectors("");
 $movie->setAwards("");
 $movie->setCreatedBy(0);
 
-// Review of this user for this movie
+// Review of current user for this movie
 $review = new Review();
 
 // Handle request
 if(isset($_GET['movieid'])) { // GET requests
+    // Get requested movie from DB through RestAPI call
     $jRequestedMovie = json_decode(RestClient::call(MOVIE_API, "GET", $_GET));
     if($jRequestedMovie != null) {
         $movie->setMovieID($jRequestedMovie->MovieID);
@@ -54,13 +55,12 @@ if(isset($_GET['movieid'])) { // GET requests
         $movie->setReviewNumber($jRequestedMovie->ReviewNumber);
         $movie->setRating($jRequestedMovie->Rating);
 
-        if(isset($_GET['action']) && $_GET['action'] == "edit") {
-            // Render edit movie form
-        } else {
-            // Render movie detail 
+        if(isset($_GET['action']) && $_GET['action'] == "edit") { // Render edit movie form
+            
+        } else { // Render movie detail             
             $toRender = "detail";
 
-            // Get review from database
+            // Get review from database through RestAPI call
             $jReview = json_decode(RestClient::call(REVIEW_API, "GET", 
                 array("userID" => LoginManager::getLoggedinUser()->getUserID(), 
                         "movieID" => $movie->getMovieID())));
@@ -79,6 +79,7 @@ if(isset($_GET['movieid'])) { // GET requests
 
             // Get message in session
             if(isset($_SESSION['review_message'])) {
+                // Unset message from session after retrieve
                 $message = $_SESSION['review_message'];
                 unset($_SESSION['review_message']);
 
@@ -95,24 +96,24 @@ if(isset($_GET['movieid'])) { // GET requests
 } else { // POST Request
     $rePopulateForm = true;
 
-    if(isset($_POST['action']) && $_POST['action'] == "add") {
-        // Add new movie
+    if(isset($_POST['action']) && $_POST['action'] == "add") { // Add new movie        
         $validateMessages = Validation::validateMovieForm($_POST);
 
         if(count($validateMessages) == 0) {
+            // Add new movie to DB through RestAPI call
             $_POST['createdBy'] = LoginManager::getLoggedinUser()->getUserID();
             $newMovieId = json_decode(RestClient::call(MOVIE_API, "POST", $_POST));
 
-            if($newMovieId != null && $newMovieId > 0) {
+            if($newMovieId != null && $newMovieId > 0) { // Add movie success
                 $message = "Movie ".$_POST['title'].' added! You can continue to add another movie.';   
                 $messageSeverity = "success";   
                 $rePopulateForm = false;         
-            } else {                
+            } else { // Failed to add movie
                 $message = "Movie ".$_POST['title'].' not added! Please try again later.';   
             }
         }
 
-        if($rePopulateForm) {
+        if($rePopulateForm) { // Keep showing values of previous form
             $movie->setMovieID($_POST['movieid']);
             $movie->setTitle($_POST['title']);
             $movie->setPosterURL($_POST['poster']);
@@ -123,11 +124,11 @@ if(isset($_GET['movieid'])) { // GET requests
             $movie->setDirectors($_POST['directors']);
             $movie->setAwards($_POST['awards']);
         }
-    } else if(isset($_POST['action']) && $_POST['action'] == "update") {
-        // Update movie
+    } else if(isset($_POST['action']) && $_POST['action'] == "update") { // Update movie        
         $validateMessages = Validation::validateMovieForm($_POST);
 
         if(count($validateMessages) == 0) {
+            // Update movie in DB through RestAPI call
             $success = json_decode(RestClient::call(MOVIE_API, "PUT", $_POST));
 
             if($success) {
@@ -138,7 +139,7 @@ if(isset($_GET['movieid'])) { // GET requests
             }
         }
 
-        if($rePopulateForm) {
+        if($rePopulateForm) { // Keep showing values of previous form
             $movie->setMovieID($_POST['movieid']);
             $movie->setTitle($_POST['title']);
             $movie->setPosterURL($_POST['poster']);
@@ -149,13 +150,13 @@ if(isset($_GET['movieid'])) { // GET requests
             $movie->setDirectors($_POST['directors']);
             $movie->setAwards($_POST['awards']);
         }
-    } else if(isset($_POST['action']) && $_POST['action'] == "review") {
-        // Leave a review
+    } else if(isset($_POST['action']) && $_POST['action'] == "review") { // Leave a review        
         $validateMessages = Validation::validateReviewForm($_POST);
 
         if(count($validateMessages) == 0) {
+            // Add review to DB through RestAPI call
             $newReview = json_decode(RestClient::call(REVIEW_API, "POST", $_POST));
-            if($newReview == 0) {
+            if($newReview == 0) { // Add review success
                 $_SESSION['review_message'] = "Your review has been added";
                 $_SESSION['messageSeverity'] = 'success';
             } else {
@@ -164,7 +165,7 @@ if(isset($_GET['movieid'])) { // GET requests
         } else {
             $_SESSION['review_message'] = "Rating and Review required";
         }
-
+        // Redirect to show movie detail page
         header('Location: MovieInfo.php?movieid='.$_POST['movieID']);
     }    
 }

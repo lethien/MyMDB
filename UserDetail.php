@@ -14,13 +14,15 @@ Page::$title = "MyMDB - User Detail";
 Page::header();
 Page::page_head(true);
 
+// Get user statistic through RestAPI call
 $userDetailStat = json_decode(RestClient::call(STATISTIC_API, "GET", 
         array("object" => 'user_detail', "userId" => LoginManager::getLoggedinUser()->getUserID())));
 
+// Loop through returned user's favorite movies array
 $jTopRatingMovies = $userDetailStat->topRatingMovies;
 $topRatingMovies = array();
 foreach ($jTopRatingMovies as $m) {
-    //Assemble a new movie
+    //Assemble a new movie object
     $movie = new Movie();
     $movie->setMovieID($m->MovieID);
     $movie->setTitle($m->Title);
@@ -35,13 +37,14 @@ foreach ($jTopRatingMovies as $m) {
     $movie->setReviewNumber($m->ReviewNumber);
     $movie->setRating($m->Rating);
     
+    // Add to display user's favorite movie array
     $topRatingMovies[] = $movie;        
 }
 
+// Render user detail content
 Page::render_user_detail($userDetailStat, $topRatingMovies);
 
 // Page footer
 Page::footer();
-
 
 ?>

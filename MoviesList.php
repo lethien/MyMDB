@@ -7,28 +7,25 @@ require_once("inc/Utility/LoginManager.class.php");
 require_once("inc/Utility/Page.class.php");
 require_once("inc/Utility/RestClient.class.php");
 
-
-
 LoginManager::verifyUserLoggedin();
-
-
 
 // Page header
 Page::$title = "MyMDB - Movie List";
 Page::header();
 Page::page_head(true);
 
-// Get movies list based on search term in POST
+// Movies list to display
 $moviesList = array();
 
-if(!empty($_POST['search'])) {
+// Get movies from DB through RestAPI call
+if(!empty($_POST['search'])) { // If there is a search term in POST, get movies based on that search term
     $result = RestClient::call(MOVIE_API,"GET",$_POST);
-} else {
+} else { // else, get all movies from DB
     $result = RestClient::call(MOVIE_API,"GET",array());
 }
 
+// Loop through returned array
 $jmovies = json_decode($result);
-   
 foreach ($jmovies as $m) {
     //Assemble a new movie class
     $movie = new Movie();
@@ -45,9 +42,11 @@ foreach ($jmovies as $m) {
     $movie->setReviewNumber($m->ReviewNumber);
     $movie->setRating($m->Rating);
     
+    // Add movie to display array
     $moviesList[] = $movie;        
 }
 
+// Render movies
 Page::render_movie_list($moviesList);
 
 // Page footer

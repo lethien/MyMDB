@@ -45,10 +45,6 @@ class User {
 
     // for JSON serialize
     function jsonSerialize() {
-        // Serialize every properties
-        //$vars = get_object_vars($this);
-        //return $vars;
-
         // Add selected properties to a standard class
         $obj = new StdClass;
         $obj->UserID = $this->getUserID();
