@@ -345,7 +345,11 @@ class Page {
                                 </div>
                                 <div class="u-full-width">
                                     <label for="review">Review: </label>
-                                    <input type="text" class="u-full-width" name="review" value="">
+                                    
+                                    <textarea rows = "10" cols = "50" class="u-full-width" name="review"></textarea>
+                                </div>
+                                <div class="u-full-width">
+                                    <input class="button-primary u-pull-right" type="submit" value="Leave Review">
                                 </div>
                                 <div class="u-full-width">
                                     <input class="button-primary u-pull-right" type="submit" value="Leave Review">
