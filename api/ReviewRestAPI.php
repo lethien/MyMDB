@@ -15,18 +15,14 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         if(isset($requestData['userID']) && isset($requestData['movieID'])) {
             // get all Reviews of a Movie from database by userID and movieID 
-            $reviews = ReviewMapper::getReviews($requestData['userID'], $requestData['movieID']);
+            $review = ReviewMapper::getReviewByUser($requestData['userID'], $requestData['movieID']);
             
-            // Serialize the Reviews to an Array          
-            $serializedUsers = array();
-            // loop all reviews and copy them to an array
-            foreach($reviews as $r) {
-                $serializedReviews[] = $r->jsonSerialize();
-            }
+            // Serialize the Review           
+            $serializedReview = $review->jsonSerialize();            
 
             // Return the serialized Reviews          
             header("Content-Type: application/json");
-            echo json_encode($serializedReviews);
+            echo json_encode($serializedReview);
         }
         break;
 

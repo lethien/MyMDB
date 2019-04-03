@@ -256,12 +256,10 @@ class Page {
 
             <?php 
                 if (count($movies) > 0) {
-                    echo '<div class="row" style="margin-top: 30px">';
-                    
+                    echo '<div class="row" style="margin-top: 30px">';                    
                     foreach ($movies as $movie)    {
                         self::render_movie_card($movie);
                     }
-
                     echo '</div>';
                 } else {
                     self::messagearea("There is no movie to display.");
@@ -271,7 +269,7 @@ class Page {
         <?php
     }
 
-    public static function render_movie_detail($movie) {
+    public static function render_movie_detail($movie, $review, $reviewMessage, $reviewMessageSeverity) {
         ?>
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
@@ -297,6 +295,49 @@ class Page {
                     <p><b>Awards:</b> <?php echo $movie->getAwards(); ?></p>
                 </div>             
             </div>
+            <div class="row" style="margin-top: 30px"> 
+                <div class="one-full column">
+                    <?php
+                        if($review->getRating() > 0) {
+                    ?>
+                        <b>Your Review: <?php echo $review->getRating(); ?> Stars.</b>
+                        <p><?php echo $review->getReview(); ?></p>                        
+                    <?php
+                        } else {
+                    ?>                        
+                        <div class="u-full-width">
+                            <b>Leave a Review:</b>
+                            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                                <input type="hidden" name="userID" value="<?php echo $review->getUserID(); ?>" >
+                                <input type="hidden" name="movieID" value="<?php echo $review->getMovieID(); ?>" >
+                                <input type="hidden" name="action" value="review" >
+                                <div class="u-full-width">
+                                    <b>Rating: </b>
+                                    <input type="radio" name="rating" value="1" style="margin-left: 20px;"> 1
+                                    <input type="radio" name="rating" value="2" style="margin-left: 20px;"> 2
+                                    <input type="radio" name="rating" value="3" style="margin-left: 20px;" checked> 3
+                                    <input type="radio" name="rating" value="4" style="margin-left: 20px;"> 4
+                                    <input type="radio" name="rating" value="5" style="margin-left: 20px;"> 5
+                                </div>
+                                <div class="u-full-width">
+                                    <label for="review">Review: </label>
+                                    <input type="text" class="u-full-width" name="review" value="">
+                                </div>
+                                <div class="u-full-width">
+                                <input class="button-primary u-pull-right" type="submit" value="Leave Review">
+                                </div>
+                            </form>
+                        </div>
+                    <?php
+                        }
+                    ?>
+                </div>             
+            </div>
+            <?php
+            if($reviewMessage != null && $reviewMessage != "") {
+                self::messagearea($reviewMessage, $reviewMessageSeverity);
+            }
+            ?>
         <?php
     }
 

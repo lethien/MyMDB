@@ -76,4 +76,20 @@ class Validation {
 
         return $messages;
     }
+
+    public static function validateReviewForm($data): Array   {
+
+        //Initialize and empty array
+        $messages = array();
+
+        //Validate all the things
+        if(!isset($data["rating"]) || $data["rating"] == "") {
+            $messages["rating"] = "Rating is required";
+        }
+        if(!isset($data["review"]) || $data["review"] == "") {
+            $messages["review"] = "Review is required";
+        }
+        
+        return $messages;
+    }
 }

@@ -21,7 +21,7 @@ class ReviewMapper {
     // get all Reviews of A movie by movieID
     public static function getReviews($movieId) {
         // query to get list of reviews with same movieID
-        $sqlSelectAllReviews = 'SELECT UserID, Rating, Review FROM Review WHERE MovieID = :movieid';
+        $sqlSelectAllReviews = 'SELECT UserID, MovieID, Rating, Review FROM Review WHERE MovieID = :movieid';
 
         self::$db->query($sqlSelectAllReviews);
         self::$db->bind(":movieid", $movieId);
@@ -29,6 +29,21 @@ class ReviewMapper {
         self::$db->execute();
         //return a list of reviews by MovieID
         return self::$db->resultSet();
+    }
+
+    // get all Review of A movie by a user
+    public static function getReviewByUser($userId, $movieId) {
+        // query to get list of reviews with same movieID
+        $sqlSelectReview = 'SELECT UserID, MovieID, Rating, Review FROM Review 
+        WHERE MovieID = :movieid AND UserID = :userid';
+
+        self::$db->query($sqlSelectReview);
+        self::$db->bind(":movieid", $movieId);
+        self::$db->bind(":userid", $userId);
+
+        self::$db->execute();
+        //return a list of reviews by MovieID
+        return self::$db->singleResult();
     }
 
     // add a new Review
