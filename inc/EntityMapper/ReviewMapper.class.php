@@ -18,6 +18,31 @@ class ReviewMapper {
         }       
     }
 
+    // get all Reviews
+    public static function getAllReviews() {
+        // query to get list of reviews with same movieID
+        $sqlSelectAllReviews = 'SELECT UserID, MovieID, Rating, Review FROM Review';
+
+        self::$db->query($sqlSelectAllReviews);
+
+        self::$db->execute();
+        //return a list of reviews by MovieID
+        return self::$db->resultSet();
+    }
+
+    // get all Reviews
+    public static function getAllReviewsOfUser($userId) {
+        // query to get list of reviews with same movieID
+        $sqlSelectAllReviews = 'SELECT UserID, MovieID, Rating, Review FROM Review WHERE UserID = :userid';
+
+        self::$db->query($sqlSelectAllReviews);
+        self::$db->bind(":userid", $userId);
+
+        self::$db->execute();
+        //return a list of reviews by MovieID
+        return self::$db->resultSet();
+    }
+
     // get all Reviews of A movie by movieID
     public static function getReviews($movieId) {
         // query to get list of reviews with same movieID

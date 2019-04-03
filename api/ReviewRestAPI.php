@@ -18,7 +18,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             $review = ReviewMapper::getReviewByUser($requestData['userID'], $requestData['movieID']);
             
             // Serialize the Review           
-            $serializedReview = $review->jsonSerialize();            
+            $serializedReview = ($review != false) ? $review->jsonSerialize() : null;
 
             // Return the serialized Reviews          
             header("Content-Type: application/json");

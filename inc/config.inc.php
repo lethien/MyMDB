@@ -11,6 +11,7 @@ define("API_URL", "http://localhost/MyMDB/api/");
 define("USER_API", "UserRestAPI.php");
 define("MOVIE_API", "MovieRestAPI.php");
 define("REVIEW_API", "ReviewRestAPI.php");
+define("STATISTIC_API", "StatisticRestAPI.php");
 
 // Home page
 define("HOME_PAGE", "MyMDB.php");

@@ -160,6 +160,66 @@ class MovieMapper {
         return self::$db->resultSet();        
     }
 	
-	
+	static function getTopRatingMovies() {
+        $selectAll = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy
+        ORDER BY Rating DESC, ReviewNumber DESC
+        LIMIT 4";
+
+        self::$db->query($selectAll);
+        self::$db->execute();
+        return self::$db->resultSet();
+    }
+
+    static function getTopReviewedMovies() {
+        $selectAll = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy
+        ORDER BY ReviewNumber DESC, Rating DESC
+        LIMIT 4";
+
+        self::$db->query($selectAll);
+        self::$db->execute();
+        return self::$db->resultSet();
+    }
+
+    static function getMoviesCreatedByUser($userId) {
+        $sqlSelect = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID 
+        WHERE CreatedBy = :UserID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy";
+        //Query
+        self::$db->query($sqlSelect);
+        //Bind
+        self::$db->bind(':UserID', $userId);
+        //Execute
+        self::$db->execute();
+        //Return
+        return self::$db->resultSet();
+    }
+
+    static function getUserFavoriteMovies($userId) {
+        $selectAll = "SELECT M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy, 
+        COUNT(Review) as ReviewNumber, IFNULL(AVG(Rating), 0) as Rating 
+        FROM Movie as M
+        LEFT JOIN Review as R ON M.MovieID = R.MovieID
+        WHERE R.UserID = :UserID
+        GROUP BY M.MovieID, Title, Poster, PlotSummary, Runtime, Genres, Crew, Directors, Awards, CreatedBy
+        ORDER BY Rating DESC
+        LIMIT 4";
+
+        self::$db->query($selectAll);
+        //Bind
+        self::$db->bind(':UserID', $userId);
+        self::$db->execute();
+        return self::$db->resultSet();
+    }
 }
 ?>

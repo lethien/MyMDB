@@ -48,7 +48,7 @@ if(!empty($_POST)) {
         $validateMessages = Validation::validateRegisterForm($_POST);
 
         if(count($validateMessages) == 0) {                 
-            $user = json_decode(RestClient::call(USER_API, "GET", array("username" => $_POST['username'])));
+            $user = json_decode(RestClient::call(USER_API, "GET", array("username" => $_POST['newusername'])));
             if($user != null) {
                 $message = "Register failed! Username already taken!";
             } else {

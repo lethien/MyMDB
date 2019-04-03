@@ -25,7 +25,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             $id = $requestData['movieid'];
             $movie = MovieMapper::getMovieById($id);
 
-            $jsonMovie = $movie->jsonSerialize();
+            $jsonMovie = ($movie != false) ? $movie->jsonSerialize() : null;
             
             header('Content-Type: application/json');
             echo json_encode($jsonMovie);

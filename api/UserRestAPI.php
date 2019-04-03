@@ -17,7 +17,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             $user = UserMapper::getUser($requestData['id']);
 
             // Serialize the user
-            $serializedUser = $user->jsonSerialize();
+            $serializedUser = ($user != false) ? $user->jsonSerialize() : null;
 
             // Return the serialized user
             header("Content-Type: application/json");
@@ -27,7 +27,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             $user = UserMapper::getUserName($requestData['username']);
 
             // Serialize the user
-            $serializedUser = $user->jsonSerialize();
+            $serializedUser = ($user != false) ? $user->jsonSerialize() : null;
 
             // Return the serialized user
             header("Content-Type: application/json");

@@ -155,7 +155,7 @@ if(isset($_GET['movieid'])) { // GET requests
 
         if(count($validateMessages) == 0) {
             $newReview = json_decode(RestClient::call(REVIEW_API, "POST", $_POST));
-            if($newReview != null) {
+            if($newReview == 0) {
                 $_SESSION['review_message'] = "Your review has been added";
                 $_SESSION['messageSeverity'] = 'success';
             } else {

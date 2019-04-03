@@ -62,7 +62,7 @@ class Page {
                         if($isLoggedin) {
                             ?>
                                 <p style="text-align: right;margin: 0;padding: 20px 0;">
-                                    Welcome <a href="UserDetail.php"><?php echo LoginManager::getLoggedinUser()->getUserName(); ?></a>
+                                    Welcome <a href="UserDetail.php"><?php if(LoginManager::getLoggedinUser() != null) echo LoginManager::getLoggedinUser()->getUserName(); ?></a>
                                     /
                                     <a href="Logout.php">Logout</a>
                                 </p>                                
@@ -217,14 +217,14 @@ class Page {
         <?php
     }
 
-    public static function render_homepage() {
+    public static function render_homepage($homePageStat, $topRatingMovies, $topReviewedMovies) {
         ?>
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>MyMDB information:</h4>
-                    <p>Number of movies: 1,558,125</p>
-                    <p>Number of users: 155,245</p>
-                    <p>Number of reviews: 548,456,253</p>
+                    <p>Number of movies: <?php echo $homePageStat->moviesCount; ?></p>
+                    <p>Number of users: <?php echo $homePageStat->usersCount; ?></p>
+                    <p>Number of reviews: <?php echo $homePageStat->reviewsCount; ?></p>
                 </div>
             </div>
 
@@ -233,12 +233,18 @@ class Page {
                     <h4>Highest Rating:</h4>
                 </div>
             </div>
+            <?php 
+                self::render_movies_rows($topRatingMovies);
+            ?>
 
             <div class="row" style="margin-top: 30px">
                 <div class="one-full column">
                     <h4>Most Reviewed:</h4>
                 </div>
             </div>
+            <?php 
+                self::render_movies_rows($topReviewedMovies);
+            ?>
         <?php
     }
 
@@ -255,15 +261,7 @@ class Page {
             </div>
 
             <?php 
-                if (count($movies) > 0) {
-                    echo '<div class="row" style="margin-top: 30px">';                    
-                    foreach ($movies as $movie)    {
-                        self::render_movie_card($movie);
-                    }
-                    echo '</div>';
-                } else {
-                    self::messagearea("There is no movie to display.");
-                }
+                self::render_movies_rows($movies);
             ?>
             
         <?php
@@ -341,6 +339,19 @@ class Page {
         <?php
     }
 
+    private static function render_movies_rows($movies) {         
+        if (count($movies) > 0) {                                
+            for ($i=0; $i<count($movies); $i++) {
+                if($i % 2 == 0) echo '<div class="row" style="margin-top: 30px">';
+                $movie = $movies[$i];
+                self::render_movie_card($movie);
+                if($i % 2 != 0) echo '</div>';
+            }
+        } else {
+            self::messagearea("There is no movie to display.");
+        }         
+    }
+
     private static function render_movie_card($movie) {
         ?>
             <div class="one-half column" style="padding: 10px;border: 1px solid lightgray;">
@@ -363,7 +374,7 @@ class Page {
         <?php
     }
 
-    public static function render_user_detail() {
+    public static function render_user_detail($userDetailStat, $topRatingMovies) {
         ?>
             <div class="row" style="margin-top: 30px">
                 <div class="one-half column">
@@ -374,8 +385,8 @@ class Page {
                 </div>
                 <div class="one-half column">
                     <h4>User Activity:</h4>
-                    <p>Created: 165 movies records</p>
-                    <p>Left: 2,001 reviews</p>
+                    <p>Movies Created: <?php echo $userDetailStat->moviesCount; ?></p>
+                    <p>Reviewed: <?php echo $userDetailStat->reviewsCount; ?></p>
                 </div>
             </div>            
             <div class="row" style="margin-top: 30px">
@@ -383,6 +394,9 @@ class Page {
                     <h4>Favorite Movies:</h4>
                 </div>
             </div>
+            <?php 
+                self::render_movies_rows($topRatingMovies);
+            ?>
         <?php
     }
 
