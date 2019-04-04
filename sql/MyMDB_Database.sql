@@ -1,10 +1,10 @@
 -- Drop if Lab08 database exist
 DROP DATABASE IF EXISTS MyMDB;
 
--- Create database Lab08
+-- Create database MyMDB
 CREATE DATABASE MyMDB;
 
--- Use database Lab08
+-- Use database MyMDB
 USE MyMDB;
 
 -- Create User table

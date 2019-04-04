@@ -448,10 +448,10 @@ class Page {
                 <div class="one-full column">
                     <h4>Favorite Movies:</h4>
                 </div>
+                <?php 
+                    self::render_movies_rows($topRatingMovies);
+                ?>
             </div>
-            <?php 
-                self::render_movies_rows($topRatingMovies);
-            ?>
         <?php
     }
 

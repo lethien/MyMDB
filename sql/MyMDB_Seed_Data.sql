@@ -1,4 +1,5 @@
-use mymdb;
+-- Use database MyMDB
+USE MyMDB;
 
 -- insert USER data
 INSERT INTO `user` (`UserName`, `Password`, `Email`) VALUES 
