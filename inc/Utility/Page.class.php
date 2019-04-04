@@ -351,9 +351,6 @@ class Page {
                                 <div class="u-full-width">
                                     <input class="button-primary u-pull-right" type="submit" value="Leave Review">
                                 </div>
-                                <div class="u-full-width">
-                                    <input class="button-primary u-pull-right" type="submit" value="Leave Review">
-                                </div>
                             </form>
                         </div>
                     <?php
