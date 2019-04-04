@@ -2,7 +2,7 @@ use mymdb;
 
 -- insert USER data
 INSERT INTO `user` (`UserName`, `Password`, `Email`) VALUES 
-('trevor','$2y$10$bfVjds9n1Hqzd9E8mprPuuf3t2S.AzTEppoYCcivqNjQ3DeRMVF9S','trevorfawcett@gmail.com'),        -- password: 1234
+('trevor','$2y$10$pFM1/JeTfd9kUJogOCTB8uDHs/.Ib8VY0SGW5FX4m2LBrTY3OANBS','trevorfawcett@gmail.com'),        -- password: 1234
 ('Martinez','$2y$10$pFM1/JeTfd9kUJogOCTB8uDHs/.Ib8VY0SGW5FX4m2LBrTY3OANBS','MaryGMartinez@jourrapide.com'), -- password: 1234
 ('Davis','$2y$10$cyeSTYVzek6M4ccqRW2.6eLFoHR7C5JXwpPUNSduDuzdmpauGfVGK','TracyJDavis@armyspy.com'),         -- password: 1234         
 ('Stark','$2y$10$tP33Mpd.2VIEWqc56dx0auhypk3LNEU/2sgVDHOg0GiaAn4Y0xQl2','StephenMStark@jourrapide.com'),    -- password: 1234
