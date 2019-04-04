@@ -103,6 +103,24 @@ class Page {
 
     public static function footer() {
         ?>
+                    <div class="row" style="border-top: 2px solid lightgray;margin-top: 25px;">
+                        <!-- Footer - Copyright -->
+                        <div class="five columns" style="margin-top: 10px">  
+                            <p>&copy; 2019 MyMDB<p>
+                            <p>CSIS 3280 - Douglas College<p>
+                            <p>Instructor: Rahim Virani<p>
+                        </div>
+                        <div class="two columns"><p></p></div>
+                        <!-- Footer - Group Members -->
+                        <div class="five columns" style="margin-top: 10px">                            
+                                Team Members:
+                                <ul>
+                                    <li>Toan Thien Le  - 300293232</li>
+                                    <li>Trevor Fawcett - 300291654</li>
+                                    <li>Tung Lam Trinh - 300267601</li>
+                                </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <script>
